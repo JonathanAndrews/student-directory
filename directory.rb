@@ -40,11 +40,11 @@ def print_header
 end
 
 def print(students)
-  puts "Filtered by which letter?"
-  letter = gets.chomp
+  puts "Filtered by name length?"
+  string_length = gets.chomp.to_i
   print_header
   students.each_with_index do |student, index|
-    if student[:name][0] == letter
+    if student[:name].length <= string_length
       puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
