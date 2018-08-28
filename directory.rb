@@ -38,16 +38,22 @@ def print_header
   puts "The students of Villains Academy"
   puts "--------------------"
 end
+
 def print(students)
+  puts "Filtered by which letter?"
+  letter = gets.chomp
+  print_header
   students.each_with_index do |student, index|
-    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    if student[:name][0] == letter
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end
 end
+
 def print_footer(names)
   puts "Overall, we have #{names.count} great students"
 end
 
 students = input_students
-print_header
 print(students)
 print_footer(students)
