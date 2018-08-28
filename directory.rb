@@ -4,7 +4,7 @@ students = [
   {name: "Dr. Hannibal Lecter", cohort: :november},
   {name: "Darth Vader", cohort: :november},
   {name: "Nurse Ratched", cohort: :november},
-  {name: "Michael Corleone", cohort: :november},
+  {name: "Michael Corleone", cohort: :november, height: 1000, hobbies: "golf, tennis, racing, pkere------"},
   {name: "Alex DeLarge", cohort: :november},
   {name: "The Wicked Witch of the West", cohort: :november},
   {name: "Terminator", cohort: :november},
@@ -47,13 +47,16 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "--------------------"
+  line_width = 100
+  puts "\n\n\n\n\n"
+  puts "The students of Villains Academy".center(line_width)
+  puts "".center(line_width,"-")
 end
 
 def print(students)
+  line_width = 100
   students.each do |student|
-    puts "#{student[:name]} (#{student[:height]}cm, #{student[:country_of_birth]}, #{student[:cohort].capitalize} cohort, hobbies include: #{student[:hobbies]})"
+    puts "#{student[:name]}" + ("(#{student[:height]}cm, #{student[:country_of_birth]}, #{student[:cohort].capitalize} cohort, Hobbies include: #{student[:hobbies]})").rjust(line_width - ("#{student[:name]}").length)
   end
 end
 
