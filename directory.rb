@@ -40,13 +40,10 @@ def print_header
 end
 
 def print(students)
-  puts "Filtered by name length?"
-  string_length = gets.chomp.to_i
-  print_header
-  students.each_with_index do |student, index|
-    if student[:name].length <= string_length
-      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
-    end
+  counter = 0
+  while counter < students.length
+    puts "#{students[counter][:name]} (#{students[counter][:cohort]} cohort)"
+    counter += 1
   end
 end
 
@@ -55,5 +52,6 @@ def print_footer(names)
 end
 
 students = input_students
+print_header
 print(students)
 print_footer(students)
