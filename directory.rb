@@ -1,17 +1,17 @@
 =begin
 #first we print the list of students
 students = [
-  {name: "Dr. Hannibal Lecter", cohort: :november},
-  {name: "Darth Vader", cohort: :november},
-  {name: "Nurse Ratched", cohort: :november},
-  {name: "Michael Corleone", cohort: :november, height: 1000, hobbies: "golf, tennis, racing, pkere------"},
-  {name: "Alex DeLarge", cohort: :november},
-  {name: "The Wicked Witch of the West", cohort: :november},
-  {name: "Terminator", cohort: :november},
-  {name: "Freddy Krueger", cohort: :november},
-  {name: "The Joker", cohort: :november},
-  {name: "Joffrey Baratheom", cohort: :november},
-  {name: "Norman Bates", cohort: :november},
+  {name: "Dr. Hannibal Lecter", cohort: :November},
+  {name: "Darth Vader", cohort: :November},
+  {name: "Nurse Ratched", cohort: :November},
+  {name: "Michael Corleone", cohort: :November, height: 1000, hobbies: "golf, tennis, racing, pkere------"},
+  {name: "Alex DeLarge", cohort: :November},
+  {name: "The Wicked Witch of the West", cohort: :November},
+  {name: "Terminator", cohort: :November},
+  {name: "Freddy Krueger", cohort: :November},
+  {name: "The Joker", cohort: :September},
+  {name: "Joffrey Baratheom", cohort: :October},
+  {name: "Norman Bates", cohort: :March},
 ]
 =end
 
@@ -68,9 +68,21 @@ def print_header
 end
 
 def print(students)
-  line_width = 100
+  possible_cohorts = []
   students.each do |student|
-    puts "#{student[:name]}" + ("(#{student[:height]}cm, #{student[:country_of_birth]}, #{student[:cohort].capitalize} cohort, Hobbies include: #{student[:hobbies]})").rjust(line_width - ("#{student[:name]}").length)
+    unless possible_cohorts.include?(student[:cohort])
+      possible_cohorts << student[:cohort]
+    end
+  end
+
+  line_width = 100
+  possible_cohorts.sort!
+  possible_cohorts.each do |cohort|
+    students.each do |student|
+      if cohort == student[:cohort]
+        puts "#{student[:name]}" + ("(#{student[:height]}cm, #{student[:country_of_birth]}, #{student[:cohort].capitalize} cohort, Hobbies include: #{student[:hobbies]})").rjust(line_width - ("#{student[:name]}").length)
+      end
+    end
   end
 end
 
