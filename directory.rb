@@ -16,6 +16,7 @@ students = [
 =end
 
 def input_students
+  months = [:January, :February, :March, :April, :May, :June, :July, :August, :September, :October, :November, :December]
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
   # create an empty array
@@ -27,6 +28,17 @@ def input_students
     # get cohort infomation
     puts "Please enter the student's cohort"
     cohort_month = gets.chomp.to_sym
+    # checking input is an actual month/ checking for typos
+    until months.include?(cohort_month)
+      # if input left blank, default value set to :september
+      if cohort_month == :""
+        cohort_month = :September
+      # if input no a month, user re-prompted
+      else
+        puts "Please enter the student's cohort"
+        cohort_month = gets.chomp.to_sym
+      end
+    end
     # get hobbies infomation
     puts "Please enter the student's hobbies"
     student_hobbies = gets.chomp
@@ -38,8 +50,10 @@ def input_students
     student_height = gets.chomp
     # add the student hash to the array
     students << {name: name, cohort: cohort_month, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
-    puts "Now we have #{students.count} students"
+    puts "Now we have #{students.count} students\n\n"
     # get another name from the user
+    puts "Please enter the names of the students"
+    puts "To finish, just hit return twice"
     name = gets.chomp
   end
   # return the array of students
