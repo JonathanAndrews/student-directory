@@ -22,12 +22,12 @@ def input_students
   # create an empty array
   students = []
   # get the first name
-  name = gets.chomp
+  name = gets.gsub(/[\n]/, "")
   # while the name is not empty, repeat this code
   while !name.empty? do
     # get cohort infomation
     puts "Please enter the student's cohort"
-    cohort_month = gets.chomp.to_sym
+    cohort_month = gets.gsub(/[\n]/, "").to_sym
     # checking input is an actual month/ checking for typos
     until months.include?(cohort_month)
       # if input left blank, default value set to :september
@@ -36,18 +36,18 @@ def input_students
       # if input no a month, user re-prompted
       else
         puts "Please enter the student's cohort"
-        cohort_month = gets.chomp.to_sym
+        cohort_month = gets.gsub(/[\n]/, "").to_sym
       end
     end
     # get hobbies infomation
     puts "Please enter the student's hobbies"
-    student_hobbies = gets.chomp
+    student_hobbies = gets.gsub(/[\n]/, "")
     # get country of birth infomation
     puts "Please enter the student's country of birth"
-    student_country_of_birth = gets.chomp
+    student_country_of_birth = gets.gsub(/[\n]/, "")
     # get height infomation
     puts "Please enter the student's height"
-    student_height = gets.chomp
+    student_height = gets.gsub(/[\n]/, "")
     # add the student hash to the array
     students << {name: name, cohort: cohort_month, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
     if students.count == 1
@@ -58,7 +58,7 @@ def input_students
     # get another name from the user
     puts "Please enter the names of the students"
     puts "To finish, just hit return twice"
-    name = gets.chomp
+    name = gets.gsub(/[\n]/, "")
   end
   # return the array of students
   students
