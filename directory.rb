@@ -60,6 +60,10 @@ def input_students
     puts "To finish, just hit return twice"
     name = gets.gsub(/[\n]/, "")
   end
+  # if no students exit program
+  if students.empty?
+    exit
+  end
   # return the array of students
   students
 end
