@@ -1,26 +1,10 @@
-=begin
-#first we print the list of students
-students = [
-  {name: "Dr. Hannibal Lecter", cohort: :November},
-  {name: "Darth Vader", cohort: :November},
-  {name: "Nurse Ratched", cohort: :November},
-  {name: "Michael Corleone", cohort: :November, height: 1000, hobbies: "golf, tennis, racing, pkere------"},
-  {name: "Alex DeLarge", cohort: :November},
-  {name: "The Wicked Witch of the West", cohort: :November},
-  {name: "Terminator", cohort: :November},
-  {name: "Freddy Krueger", cohort: :November},
-  {name: "The Joker", cohort: :September},
-  {name: "Joffrey Baratheom", cohort: :October},
-  {name: "Norman Bates", cohort: :March},
-]
-=end
+
+@students = []
 
 def input_students
   months = [:January, :February, :March, :April, :May, :June, :July, :August, :September, :October, :November, :December]
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  # create an empty array
-  students = []
   # get the first name
   name = gets.gsub(/[\n]/, "")
   # while the name is not empty, repeat this code
@@ -49,11 +33,11 @@ def input_students
     puts "Please enter the student's height"
     student_height = gets.gsub(/[\n]/, "")
     # add the student hash to the array
-    students << {name: name, cohort: cohort_month, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
-    if students.count == 1
+    @students << {name: name, cohort: cohort_month, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
+    if @students.count == 1
       puts "Now we have 1 student\n\n"
     else
-      puts "Now we have #{students.count} students\n\n"
+      puts "Now we have #{@students.count} students\n\n"
     end
     # get another name from the user
     puts "Please enter the names of the students"
@@ -61,11 +45,46 @@ def input_students
     name = gets.gsub(/[\n]/, "")
   end
   # if no students exit program
-  if students.empty?
+  if @students.empty?
     exit
   end
-  # return the array of students
-  students
+end
+
+def interactive_menue
+  loop do
+    # 1. print the menu and ask the user what to do
+    print_menu
+    # 2. do what the user has asked
+    process(gets.chomp)
+  end
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit" # 9 because we'll be adding more items
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+    when "1"
+      # input the students
+      input_students
+    when "2"
+      # show the students
+      show_students
+    when "9"
+      # exit the program
+      exit
+    else
+      puts "I don't know what you meant, try again"
+  end
 end
 
 def print_header
@@ -75,9 +94,9 @@ def print_header
   puts "".center(line_width,"-")
 end
 
-def print(students)
+def print_students_list
   possible_cohorts = []
-  students.each do |student|
+  @students.each do |student|
     unless possible_cohorts.include?(student[:cohort])
       possible_cohorts << student[:cohort]
     end
@@ -86,7 +105,7 @@ def print(students)
   line_width = 100
   possible_cohorts.sort!
   possible_cohorts.each do |cohort|
-    students.each do |student|
+    @students.each do |student|
       if cohort == student[:cohort]
         puts "#{student[:name]}" + ("(#{student[:height]}cm, #{student[:country_of_birth]}, #{student[:cohort].capitalize} cohort, Hobbies include: #{student[:hobbies]})").rjust(line_width - ("#{student[:name]}").length)
       end
@@ -94,40 +113,16 @@ def print(students)
   end
 end
 
-def print_footer(names)
-  if names.count == 1
+def print_footer
+  if @students.count == 1
     puts "Overall, we have 1 great student"
   else
-    puts "Overall, we have #{names.count} great students"
+    puts "Overall, we have #{@students.count} great students"
   end
 end
 
-def interactive_menue
-  students = []
-  loop do
-    # 1. print the menu and ask the user what to do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit" # 9 because we'll be adding more items
-    # 2. read the input and save it into a variable
-    selection = gets.chomp
-    # 3. do what the user has asked
-    case selection
-      when "1"
-        # input the students
-        students = input_students
-      when "2"
-        # show the students
-        print_header
-        print(students)
-        print_footer(students)
-      when "9"
-        # exit the program
-        exit
-      else
-        puts "I don't know what you meant, try again"
-    end
-  end
-end
+
+
+
 
 interactive_menue
