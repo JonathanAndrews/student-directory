@@ -2,14 +2,14 @@
 @students = []
 
 def name_input_prompt
-  puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
+  puts "Please enter the name of the student."
+  puts "To finish, just hit return twice."
   name = STDIN.gets.gsub(/[\n]/, "")
 end
 
 def cohort_input
   months = [:January, :February, :March, :April, :May, :June, :July, :August, :September, :October, :November, :December]
-  puts "Please enter the student's cohort"
+  puts "Please enter the student's cohort:"
   cohort_month = STDIN.gets.gsub(/[\n]/, "").to_sym
   # checking input is an actual month/ checking for typos
   until months.include?(cohort_month)
@@ -18,7 +18,7 @@ def cohort_input
       cohort_month = :September
     # if input no a month, user re-prompted
     else
-      puts "Please enter the student's cohort"
+      puts "Please enter the student's cohort:"
       cohort_month = STDIN.gets.gsub(/[\n]/, "").to_sym
     end
   end
@@ -50,13 +50,13 @@ end
 
 def additonal_student_info
   # get hobbies infomation
-  puts "Please enter the student's hobbies"
+  puts "Please enter the student's hobbies:"
   student_hobbies = STDIN.gets.gsub(/[\n]/, "")
   # get country of birth infomation
-  puts "Please enter the student's country of birth"
+  puts "Please enter the student's country of birth:"
   student_country_of_birth = STDIN.gets.gsub(/[\n]/, "")
   # get height infomation
-  puts "Please enter the student's height"
+  puts "Please enter the student's height:"
   student_height = STDIN.gets.gsub(/[\n]/, "")
   # return array
   [student_hobbies, student_country_of_birth, student_height]
@@ -64,9 +64,9 @@ end
 
 def confirmation_of_input
   if @students.count == 1
-    puts "Now we have 1 student\n\n\n\n\n"
+    puts "Now we have 1 student.\n\n\n\n\n"
   else
-    puts "Now we have #{@students.count} students\n\n\n\n\n"
+    puts "Now we have #{@students.count} students.\n\n\n\n\n"
   end
 end
 
@@ -108,10 +108,21 @@ def process(selection)
       load_students
     when "9"
       # exit the program
-      exit
+      silly_exit
     else
-      puts "I don't know what you meant, try again"
+      puts "I don't know what you meant, try again?"
   end
+end
+
+def silly_exit
+  print "Program exiting"
+  sleep(1)
+  print "."
+  sleep(1)
+  print "."
+  sleep(1)
+  print ".\n"
+  exit
 end
 
 def print_header
@@ -128,7 +139,7 @@ def list_of_cohorts
       possible_cohorts << student[:cohort]
     end
   end
-  possible_cohorts.sort!
+  possible_cohorts.sort.reverse
 end
 
 def print_students_list
@@ -162,6 +173,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts "Student data saved to 'students.csv'\n\n\n\n"
 end
 
 def load_students(filename = "students.csv")
@@ -171,6 +183,7 @@ def load_students(filename = "students.csv")
     shovel_student_hash_into_instance(*student_array)
   end
   file.close
+  puts "Student data loaded from '#{filename}'\n\n\n\n"
 end
 
 def try_load_students
