@@ -6,12 +6,12 @@ def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
   # get the first name
-  name = gets.gsub(/[\n]/, "")
+  name = STDIN.gets.gsub(/[\n]/, "")
   # while the name is not empty, repeat this code
   while !name.empty? do
     # get cohort infomation
     puts "Please enter the student's cohort"
-    cohort_month = gets.gsub(/[\n]/, "").to_sym
+    cohort_month = STDIN.gets.gsub(/[\n]/, "").to_sym
     # checking input is an actual month/ checking for typos
     until months.include?(cohort_month)
       # if input left blank, default value set to :september
@@ -20,18 +20,18 @@ def input_students
       # if input no a month, user re-prompted
       else
         puts "Please enter the student's cohort"
-        cohort_month = gets.gsub(/[\n]/, "").to_sym
+        cohort_month = STDIN.gets.gsub(/[\n]/, "").to_sym
       end
     end
     # get hobbies infomation
     puts "Please enter the student's hobbies"
-    student_hobbies = gets.gsub(/[\n]/, "")
+    student_hobbies = STDIN.gets.gsub(/[\n]/, "")
     # get country of birth infomation
     puts "Please enter the student's country of birth"
-    student_country_of_birth = gets.gsub(/[\n]/, "")
+    student_country_of_birth = STDIN.gets.gsub(/[\n]/, "")
     # get height infomation
     puts "Please enter the student's height"
-    student_height = gets.gsub(/[\n]/, "")
+    student_height = STDIN.gets.gsub(/[\n]/, "")
     # add the student hash to the array
     @students << {name: name, cohort: cohort_month, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
     if @students.count == 1
@@ -42,7 +42,7 @@ def input_students
     # get another name from the user
     puts "Please enter the names of the students"
     puts "To finish, just hit return twice"
-    name = gets.gsub(/[\n]/, "")
+    name = STDIN.gets.gsub(/[\n]/, "")
   end
   # if no students exit program
   if @students.empty?
@@ -55,11 +55,12 @@ def interactive_menue
     # 1. print the menu and ask the user what to do
     print_menu
     # 2. do what the user has asked
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
 def print_menu
+  try_load_students
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
@@ -140,13 +141,25 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, student_height, student_country_of_birth, cohort_month, student_hobbies = line.chomp.split(',')
     @students << {name: name, cohort: cohort_month.to_sym, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
   end
   file.close
+end
+
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exits
+    load_students(filename)
+    puts "Loaded #{@students.count} students from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit # quit the program
+  end
 end
 
 
