@@ -105,7 +105,13 @@ def process(selection)
     when "3"
       save_students
     when "4"
-      load_students
+      puts "From where would you like to load the student data?"
+      filename = STDIN.gets.gsub(/[\n]/, "")
+      if  filename == ""
+        load_students
+      else
+        load_students(filename)
+      end
     when "9"
       # exit the program
       silly_exit
@@ -164,8 +170,13 @@ def print_footer
 end
 
 def save_students
+  puts "To where would you like to save the student data?"
+  filename = STDIN.gets.gsub(/[\n]/, "")
+  if filename == ""
+    filename = "students.csv"
+  end
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:height], student[:country_of_birth], student[:cohort].capitalize, student[:hobbies]]
@@ -173,7 +184,7 @@ def save_students
     file.puts csv_line
   end
   file.close
-  puts "Student data saved to 'students.csv'\n\n\n\n"
+  puts "Student data saved to '#{filename}'\n\n\n\n"
 end
 
 def load_students(filename = "students.csv")
