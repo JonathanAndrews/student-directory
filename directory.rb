@@ -33,7 +33,7 @@ def input_students
     puts "Please enter the student's height"
     student_height = STDIN.gets.gsub(/[\n]/, "")
     # add the student hash to the array
-    @students << {name: name, cohort: cohort_month, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
+    shovel_student_hash_into_instance(name, student_height, student_country_of_birth, cohort_month, student_hobbies)
     if @students.count == 1
       puts "Now we have 1 student\n\n"
     else
@@ -144,8 +144,8 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, student_height, student_country_of_birth, cohort_month, student_hobbies = line.chomp.split(',')
-    @students << {name: name, cohort: cohort_month.to_sym, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
+    student_array = line.chomp.split(',')
+    shovel_student_hash_into_instance(*student_array)
   end
   file.close
 end
@@ -162,6 +162,9 @@ def try_load_students
   end
 end
 
+def shovel_student_hash_into_instance(name, student_height, student_country_of_birth, cohort_month, student_hobbies)
+  @students << {name: name, cohort: cohort_month.to_sym, hobbies: student_hobbies, country_of_birth: student_country_of_birth, height: student_height}
+end
 
 
 interactive_menue
