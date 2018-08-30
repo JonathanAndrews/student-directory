@@ -1,48 +1,46 @@
 
 @students = []
 
-def input_students
-  months = [:January, :February, :March, :April, :May, :June, :July, :August, :September, :October, :November, :December]
+def name_input_prompt
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  # get the first name
   name = STDIN.gets.gsub(/[\n]/, "")
+end
+
+def cohort_input
+  months = [:January, :February, :March, :April, :May, :June, :July, :August, :September, :October, :November, :December]
+  puts "Please enter the student's cohort"
+  cohort_month = STDIN.gets.gsub(/[\n]/, "").to_sym
+  # checking input is an actual month/ checking for typos
+  until months.include?(cohort_month)
+    # if input left blank, default value set to :september
+    if cohort_month == :""
+      cohort_month = :September
+    # if input no a month, user re-prompted
+    else
+      puts "Please enter the student's cohort"
+      cohort_month = STDIN.gets.gsub(/[\n]/, "").to_sym
+    end
+  end
+  cohort_month
+end
+
+def input_students
+  name = name_input_prompt
   # while the name is not empty, repeat this code
   while !name.empty? do
     # get cohort infomation
-    puts "Please enter the student's cohort"
-    cohort_month = STDIN.gets.gsub(/[\n]/, "").to_sym
-    # checking input is an actual month/ checking for typos
-    until months.include?(cohort_month)
-      # if input left blank, default value set to :september
-      if cohort_month == :""
-        cohort_month = :September
-      # if input no a month, user re-prompted
-      else
-        puts "Please enter the student's cohort"
-        cohort_month = STDIN.gets.gsub(/[\n]/, "").to_sym
-      end
-    end
-    # get hobbies infomation
-    puts "Please enter the student's hobbies"
-    student_hobbies = STDIN.gets.gsub(/[\n]/, "")
-    # get country of birth infomation
-    puts "Please enter the student's country of birth"
-    student_country_of_birth = STDIN.gets.gsub(/[\n]/, "")
-    # get height infomation
-    puts "Please enter the student's height"
-    student_height = STDIN.gets.gsub(/[\n]/, "")
+    cohort_month = cohort_input
+    # get other info
+    info = additonal_student_info
+    student_hobbies = info[0]
+    student_country_of_birth = info[1]
+    student_height = info[2]
     # add the student hash to the array
     shovel_student_hash_into_instance(name, student_height, student_country_of_birth, cohort_month, student_hobbies)
-    if @students.count == 1
-      puts "Now we have 1 student\n\n"
-    else
-      puts "Now we have #{@students.count} students\n\n"
-    end
+    confirmation_of_input
     # get another name from the user
-    puts "Please enter the names of the students"
-    puts "To finish, just hit return twice"
-    name = STDIN.gets.gsub(/[\n]/, "")
+    name = name_input_prompt
   end
   # if no students exit program
   if @students.empty?
@@ -50,7 +48,30 @@ def input_students
   end
 end
 
+def additonal_student_info
+  # get hobbies infomation
+  puts "Please enter the student's hobbies"
+  student_hobbies = STDIN.gets.gsub(/[\n]/, "")
+  # get country of birth infomation
+  puts "Please enter the student's country of birth"
+  student_country_of_birth = STDIN.gets.gsub(/[\n]/, "")
+  # get height infomation
+  puts "Please enter the student's height"
+  student_height = STDIN.gets.gsub(/[\n]/, "")
+  # return array
+  [student_hobbies, student_country_of_birth, student_height]
+end
+
+def confirmation_of_input
+  if @students.count == 1
+    puts "Now we have 1 student\n\n\n\n\n"
+  else
+    puts "Now we have #{@students.count} students\n\n\n\n\n"
+  end
+end
+
 def interactive_menue
+  try_load_students
   loop do
     # 1. print the menu and ask the user what to do
     print_menu
@@ -60,7 +81,6 @@ def interactive_menue
 end
 
 def print_menu
-  try_load_students
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
@@ -101,16 +121,19 @@ def print_header
   puts "".center(line_width,"-")
 end
 
-def print_students_list
+def list_of_cohorts
   possible_cohorts = []
   @students.each do |student|
     unless possible_cohorts.include?(student[:cohort])
       possible_cohorts << student[:cohort]
     end
   end
-
-  line_width = 100
   possible_cohorts.sort!
+end
+
+def print_students_list
+  possible_cohorts = list_of_cohorts
+  line_width = 100
   possible_cohorts.each do |cohort|
     @students.each do |student|
       if cohort == student[:cohort]
