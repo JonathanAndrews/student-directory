@@ -172,28 +172,29 @@ end
 def save_students
   puts "To where would you like to save the student data?"
   filename = STDIN.gets.gsub(/[\n]/, "")
+  # setting default to students.csv
   if filename == ""
     filename = "students.csv"
   end
   # open the file for writing
-  file = File.open(filename, "w")
+  file = File.open(filename, "w") { |file|
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:height], student[:country_of_birth], student[:cohort].capitalize, student[:hobbies]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-  file.close
+  }
   puts "Student data saved to '#{filename}'\n\n\n\n"
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
+  file = File.open(filename, "r") { |file|
   file.readlines.each do |line|
     student_array = line.chomp.split(',')
     shovel_student_hash_into_instance(*student_array)
   end
-  file.close
+  }
   puts "Student data loaded from '#{filename}'\n\n\n\n"
 end
 
