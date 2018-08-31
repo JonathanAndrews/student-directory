@@ -1,4 +1,4 @@
-
+require 'csv'
 @students = []
 
 def name_input_prompt
@@ -188,13 +188,32 @@ def save_students
   puts "Student data saved to '#{filename}'\n\n\n\n"
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r") { |file|
-  file.readlines.each do |line|
-    student_array = line.chomp.split(',')
-    shovel_student_hash_into_instance(*student_array)
+def save_students
+  filename = save_student_input
+  # open the file for writing
+  CSV.open("./#{filename}", "wb") do |file|
+  # iterate over the array of students
+    @students.each do |student|
+      file << [student[:name], student[:height], student[:country_of_birth], student[:cohort].capitalize, student[:hobbies]]
+    end
   end
-  }
+  puts "Student data saved to '#{filename}'\n\n\n\n"
+end
+
+def save_student_input
+  puts "To where would you like to save the student data?"
+  filename = STDIN.gets.gsub(/[\n]/, "")
+  # setting default to students.csv
+  if filename == ""
+    filename = "students.csv"
+  end
+  filename
+end
+
+def load_students(filename = "students.csv")
+  CSV.foreach("./#{filename}") do |line|
+    shovel_student_hash_into_instance(*line)
+  end
   puts "Student data loaded from '#{filename}'\n\n\n\n"
 end
 
